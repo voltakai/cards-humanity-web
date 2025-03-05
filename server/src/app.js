@@ -3,51 +3,71 @@ const express = require('express');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
-const securityMiddleware = require('./utils/security');
+const securityMiddleware = require('./middleware/security');
 const { apiLimiter } = require('./middleware/rateLimiter');
 const errorHandler = require('./middleware/errorHandler');
 const logger = require('./utils/logger');
+const http = require('http');
+const socketIo = require('socket.io');
+const path = require('path');
+const apiRoutes = require('./routes/api');
+const gameHandlers = require('./socket/gameHandlers');
 
 const app = express();
+const server = http.createServer(app);
 
-// Security middleware
-app.use(helmet());
-app.use(cors({
-  origin: process.env.FRONTEND_URL
-}));
-
-// Rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100 // limit each IP to 100 requests per windowMs
+// Socket.io setup
+const io = socketIo(server, {
+  cors: {
+    origin: process.env.CLIENT_URL || 'http://localhost:3000',
+    methods: ['GET', 'POST'],
+    credentials: true
+  }
 });
-app.use(limiter);
 
-// Body parser middleware
+// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Apply security middleware
+app.use(securityMiddleware.helmet);
+app.use(securityMiddleware.cors);
+app.use(securityMiddleware.rateLimit);
 
 // Health check endpoint
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// Apply security middleware
-securityMiddleware.forEach(middleware => app.use(middleware));
-
 // Apply rate limiting to all routes
 app.use(apiLimiter);
 
-// Routes
-app.use('/api/games', require('./routes/games'));
-app.use('/api/admin', require('./routes/admin'));
+// API routes
+app.use('/api', apiRoutes);
 
-// Error handling
-app.use(errorHandler);
-
-// Catch-all route
-app.use('*', (req, res) => {
-  res.status(404).json({ error: 'Not Found' });
+// Socket.io event handlers
+io.on('connection', (socket) => {
+  logger.info(`Socket connected: ${socket.id}`);
+  gameHandlers(io, socket);
 });
 
-module.exports = app; 
+// Serve static files in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../../client/build')));
+  
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../client/build', 'index.html'));
+  });
+}
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  logger.error(`Error: ${err.message}`);
+  res.status(err.status || 500).json({
+    error: {
+      message: err.message || 'Internal Server Error'
+    }
+  });
+});
+
+module.exports = { app, server }; 
