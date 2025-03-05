@@ -1,0 +1,162 @@
+.admin-dashboard {
+  min-height: 100vh;
+  background-color: #1a1a1a;
+  color: #ffffff;
+  padding: 20px;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: #2d2d2d;
+  border-radius: 10px;
+}
+
+.refresh-button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.dashboard-content {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 20px;
+  height: calc(100vh - 120px);
+}
+
+.games-list {
+  background-color: #2d2d2d;
+  border-radius: 10px;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.game-item {
+  padding: 15px;
+  margin-bottom: 10px;
+  background-color: #3d3d3d;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.game-item:hover {
+  background-color: #4d4d4d;
+}
+
+.game-item.selected {
+  background-color: #4CAF50;
+}
+
+.game-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.game-details {
+  background-color: #2d2d2d;
+  border-radius: 10px;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.game-actions {
+  margin-bottom: 20px;
+}
+
+.players-section, .chat-section {
+  margin-top: 20px;
+}
+
+.player-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: #3d3d3d;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.czar-badge {
+  background-color: #6200ea;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.8em;
+}
+
+.message-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  background-color: #3d3d3d;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.message-user {
+  font-weight: bold;
+}
+
+.message-time {
+  color: #999;
+  font-size: 0.8em;
+}
+
+.kick-button, .delete-button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.kick-button {
+  background-color: #ff4444;
+}
+
+.delete-button {
+  background-color: #ff4444;
+}
+
+.reset-button {
+  background-color: #ff9800;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+@media (max-width: 1024px) {
+  .dashboard-content {
+    grid-template-columns: 1fr;
+  }
+
+  .games-list {
+    max-height: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-dashboard {
+    padding: 10px;
+  }
+
+  .message-item {
+    grid-template-columns: 1fr auto;
+  }
+
+  .message-time {
+    display: none;
+  }
+} 

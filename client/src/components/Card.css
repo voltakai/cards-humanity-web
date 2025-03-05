@@ -1,0 +1,70 @@
+.card {
+  position: relative;
+  width: 200px;
+  height: 280px;
+  border-radius: 15px;
+  padding: 20px;
+  font-size: 1.1em;
+  line-height: 1.4;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  user-select: none;
+  perspective: 1000px;
+}
+
+.card.white {
+  background-color: #ffffff;
+  color: #000000;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card.black {
+  background-color: #000000;
+  color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.card:hover:not(.disabled) {
+  transform: translateY(-5px) rotateY(5deg);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card.selected {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);
+  border: 2px solid #4CAF50;
+}
+
+.card.disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.card-content {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+.card-pick {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.8em;
+}
+
+@media (max-width: 768px) {
+  .card {
+    width: 150px;
+    height: 210px;
+    font-size: 0.9em;
+    padding: 15px;
+  }
+} 

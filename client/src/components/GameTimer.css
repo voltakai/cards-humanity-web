@@ -1,0 +1,38 @@
+.game-timer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
+}
+
+.timer-bar {
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.timer-progress {
+  height: 100%;
+  transition: width 1s linear;
+}
+
+.timer-text {
+  text-align: center;
+  color: white;
+  font-size: 0.9em;
+  margin-top: 5px;
+}
+
+@media (max-width: 768px) {
+  .game-timer {
+    padding: 5px;
+  }
+
+  .timer-text {
+    font-size: 0.8em;
+  }
+} 

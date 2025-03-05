@@ -1,0 +1,9 @@
+  - type: redis
+    name: cah-redis
+    ipAllowList: []
+
+databases:
+  - name: cah-db
+    databaseName: cards_against_humanity
+    user: cah_user
+    ipAllowList: [] 

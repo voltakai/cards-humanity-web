@@ -1,0 +1,36 @@
+.player-hand {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+}
+
+.hand-container {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 20px;
+  scroll-snap-type: x mandatory;
+}
+
+.card-slot {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  transition: transform 0.3s ease;
+}
+
+.card-slot.selected {
+  transform: translateY(-20px);
+}
+
+@media (max-width: 768px) {
+  .player-hand {
+    padding: 10px;
+  }
+
+  .hand-container {
+    gap: 5px;
+  }
+} 

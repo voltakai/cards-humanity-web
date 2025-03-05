@@ -1,0 +1,106 @@
+.game-room {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 20px;
+  height: 100vh;
+  padding: 20px;
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
+.game-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #2d2d2d;
+  border-radius: 8px;
+}
+
+.game-board {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 20px;
+  overflow: hidden;
+}
+
+.black-card-area {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.player-hand {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  padding: 20px;
+  overflow-y: auto;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.submissions-area {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  padding: 20px;
+  justify-content: center;
+  align-items: flex-start;
+  overflow-y: auto;
+}
+
+.submit-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 12px 24px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.submit-button:hover {
+  background-color: #45a049;
+  transform: translateY(-2px);
+}
+
+.submit-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.error-message {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #ff4444;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  z-index: 1000;
+  animation: fadeOut 5s forwards;
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@media (max-width: 768px) {
+  .game-room {
+    padding: 10px;
+  }
+
+  .player-hand {
+    padding: 10px;
+  }
+} 
