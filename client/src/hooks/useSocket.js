@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { io } from 'socket.io-client';
+import io from 'socket.io-client';
 
-// Export as default
-const useSocket = (serverUrl) => {
+// Create the hook
+export const useSocket = (serverUrl) => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
@@ -26,4 +26,5 @@ const useSocket = (serverUrl) => {
   return socket;
 };
 
+// Also export as default for flexibility
 export default useSocket; 

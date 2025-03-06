@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useSocket from '../hooks/useSocket';
+import { useSocket } from '../hooks/useSocket';
 import { AuthContext } from './AuthContext';
 
 // Create and export the GameContext
