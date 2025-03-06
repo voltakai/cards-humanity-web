@@ -1,4 +1,5 @@
 services:
+  # Backend API Service
   - type: web
     name: cah-server
     env: node
@@ -11,27 +12,23 @@ services:
         fromDatabase:
           name: cah-db
           property: connectionString
-      - key: ADMIN_USERNAME
-        value: admin
-      - key: ADMIN_PASSWORD
-        value: admin
-      - key: JWT_SECRET
-        generateValue: true
-      - key: FRONTEND_URL
-        value: https://your-frontend-url.onrender.com
+      - key: CLIENT_URL
+        value: https://cah-client.onrender.com
 
+  # Frontend Client Service
   - type: web
     name: cah-client
-    env: static
+    env: node
     buildCommand: cd client && npm install && npm run build
-    staticPublishPath: ./client/build
+    startCommand: cd client && npm start
     envVars:
       - key: REACT_APP_API_URL
-        value: https://your-backend-url.onrender.com
-      - key: REACT_APP_WS_URL
-        value: wss://your-backend-url.onrender.com
+        value: https://cah-server.onrender.com
+      - key: NODE_ENV
+        value: production
 
 databases:
   - name: cah-db
     databaseName: cards_against_humanity
-    ipAllowList: [] 
+    user: cah_admin
+    plan: free 
