@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import useSocket from '../hooks/useSocket';
 import { AuthContext } from './AuthContext';
 
-// Create the GameContext
+// Create and export the GameContext
 export const GameContext = createContext();
 
 export const GameProvider = ({ children }) => {

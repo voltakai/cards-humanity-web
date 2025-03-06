@@ -1,45 +1,80 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import api from '../utils/api';
+import axios from 'axios';
 
-const AuthContext = createContext(null);
+// Create and export the AuthContext
+export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  // Initialize auth state from localStorage on component mount
   useEffect(() => {
-    const token = localStorage.getItem('adminToken');
-    if (token) {
-      verifyToken(token);
-    } else {
-      setLoading(false);
+    const storedUser = localStorage.getItem('authUser');
+    if (storedUser) {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (err) {
+        console.error('Failed to parse stored user data', err);
+        localStorage.removeItem('authUser');
+      }
     }
+    setLoading(false);
   }, []);
 
-  const verifyToken = async (token) => {
+  // Login function
+  const login = async (username, password) => {
     try {
-      await api.get('/api/admin/verify');
-      setIsAdmin(true);
-    } catch (error) {
-      localStorage.removeItem('adminToken');
+      setLoading(true);
+      setError(null);
+      
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/login`, {
+        username,
+        password
+      });
+      
+      const userData = response.data;
+      setUser(userData);
+      localStorage.setItem('authUser', JSON.stringify(userData));
+      
+      return { success: true };
+    } catch (err) {
+      setError(err.response?.data?.message || 'Login failed');
+      return { success: false, error: err.response?.data?.message || 'Login failed' };
     } finally {
       setLoading(false);
     }
   };
 
-  const login = async (username, password) => {
-    const response = await api.post('/api/admin/login', { username, password });
-    localStorage.setItem('adminToken', response.data.token);
-    setIsAdmin(true);
+  // Logout function
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem('authUser');
   };
 
-  const logout = () => {
-    localStorage.removeItem('adminToken');
-    setIsAdmin(false);
+  // Check if user is authenticated
+  const isAuthenticated = () => {
+    return !!user;
+  };
+
+  // Check if user is an admin
+  const isAdmin = () => {
+    return user?.role === 'admin';
   };
 
   return (
-    <AuthContext.Provider value={{ isAdmin, loading, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        error,
+        login,
+        logout,
+        isAuthenticated,
+        isAdmin
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
