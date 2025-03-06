@@ -40,6 +40,12 @@ const AdminDashboard = () => {
     };
   }, [socket]);
 
+  useEffect(() => {
+    if (selectedGame?.id) {
+      fetchGameDetails(selectedGame.id);
+    }
+  }, [selectedGame?.id]);
+
   const fetchActiveGames = async () => {
     try {
       const response = await fetch('/api/admin/games', {

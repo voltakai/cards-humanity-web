@@ -3,7 +3,6 @@ import { useSocket } from '../hooks/useSocket';
 import { GameContext } from '../contexts/GameContext';
 import Card from './Card';
 import Chat from './Chat';
-import PlayerList from './PlayerList';
 import PlayersList from './PlayersList';
 import './GameRoom.css';
 
