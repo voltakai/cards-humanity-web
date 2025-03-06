@@ -1,32 +1,29 @@
-import { useEffect, useRef } from 'react';
-import io from 'socket.io-client';
+import { useEffect, useState } from 'react';
+import { io } from 'socket.io-client';
 
-export function useSocket(url) {
-  const socketRef = useRef();
+// Export as default
+const useSocket = (serverUrl) => {
+  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    socketRef.current = io(url, {
+    // Create socket connection
+    const socketInstance = io(serverUrl, {
       transports: ['websocket'],
-      autoConnect: true,
       reconnection: true,
-      reconnectionAttempts: 5,
-      reconnectionDelay: 1000
+      reconnectionDelay: 1000,
+      reconnectionAttempts: 10
     });
 
-    socketRef.current.on('connect_error', (error) => {
-      console.error('Socket connection error:', error);
-    });
+    // Set socket in state
+    setSocket(socketInstance);
 
-    socketRef.current.on('reconnect_attempt', (attemptNumber) => {
-      console.log(`Attempting to reconnect... (${attemptNumber})`);
-    });
-
+    // Clean up function
     return () => {
-      if (socketRef.current) {
-        socketRef.current.disconnect();
-      }
+      socketInstance.disconnect();
     };
-  }, [url]);
+  }, [serverUrl]);
 
-  return socketRef.current;
-} 
+  return socket;
+};
+
+export default useSocket; 

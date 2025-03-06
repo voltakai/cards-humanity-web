@@ -1,4 +1,5 @@
-import { useReducer } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { GameContext } from '../contexts/GameContext';
 
 const initialState = {
   gameId: null,
@@ -87,7 +88,24 @@ function gameReducer(state, action) {
   }
 }
 
-export function useGameState() {
-  const [state, dispatch] = useReducer(gameReducer, initialState);
-  return { state, dispatch };
-} 
+// Export as default
+const useGameState = (gameId) => {
+  const { gameState, loading, error, joinGame, leaveGame } = useContext(GameContext);
+  const [localGameState, setLocalGameState] = useState(null);
+
+  useEffect(() => {
+    if (gameState && gameState.gameId === gameId) {
+      setLocalGameState(gameState);
+    }
+  }, [gameState, gameId]);
+
+  return {
+    gameState: localGameState,
+    loading,
+    error,
+    joinGame,
+    leaveGame
+  };
+};
+
+export default useGameState; 
