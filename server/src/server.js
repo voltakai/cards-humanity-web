@@ -1,4 +1,4 @@
-const app = require('./app');
+const { app, server } = require('./app');
 const http = require('http');
 const SocketManager = require('./services/socketManager');
 const logger = require('./utils/logger');
@@ -7,7 +7,6 @@ const roomService = require('./services/roomService');
 const { v4: uuidv4 } = require('uuid');
 const cardService = require('./services/cardService');
 
-const server = http.createServer(app);
 const io = require('socket.io')(server, {
   cors: {
     origin: process.env.FRONTEND_URL,
@@ -141,6 +140,7 @@ io.on('connection', (socket) => {
 
 const PORT = process.env.PORT || 3001;
 
+// Start the server
 server.listen(PORT, () => {
   logger.info(`Server running on port ${PORT}`);
 });

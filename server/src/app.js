@@ -13,6 +13,7 @@ const path = require('path');
 const apiRoutes = require('./routes/api');
 const gameHandlers = require('./socket/gameHandlers');
 
+// Initialize Express app
 const app = express();
 const server = http.createServer(app);
 
@@ -24,6 +25,9 @@ const io = socketIo(server, {
     credentials: true
   }
 });
+
+// Make io accessible to routes
+app.locals.io = io;
 
 // Middleware
 app.use(express.json());
