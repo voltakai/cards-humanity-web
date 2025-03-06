@@ -20,15 +20,13 @@ services:
     name: cah-client
     env: node
     buildCommand: cd client && npm install && npm run build
-    startCommand: cd client && npm start
+    startCommand: cd client && npx serve -s build
     envVars:
       - key: REACT_APP_API_URL
         value: https://cah-server.onrender.com
-      - key: NODE_ENV
-        value: production
 
 databases:
   - name: cah-db
     databaseName: cards_against_humanity
     user: cah_admin
-    plan: free 
+    plan: free
