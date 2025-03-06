@@ -16,13 +16,16 @@ services:
         value: https://cah-client.onrender.com
 
   # Frontend Client Service
-  - type: static
+  - type: web
     name: cah-client
+    env: node
     buildCommand: cd client && npm install && npm run build
-    publishDir: client/build
+    startCommand: cd client && npm start
     envVars:
       - key: REACT_APP_API_URL
         value: https://cah-server.onrender.com
+      - key: NODE_ENV
+        value: production
 
 databases:
   - name: cah-db
