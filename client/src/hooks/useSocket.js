@@ -6,22 +6,33 @@ export const useSocket = (serverUrl) => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    // Create socket connection
-    const socketInstance = io(serverUrl, {
-      transports: ['websocket'],
+    // For debugging purposes
+    console.log('Connecting to socket server at:', serverUrl);
+    
+    // Make sure we're using the server URL, not the client URL
+    const serverURL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
+    
+    const socketInstance = io(serverURL, {
+      transports: ['websocket', 'polling'],
       reconnection: true,
       reconnectionDelay: 1000,
       reconnectionAttempts: 10
     });
 
-    // Set socket in state
+    socketInstance.on('connect', () => {
+      console.log('Socket connected successfully with ID:', socketInstance.id);
+    });
+
+    socketInstance.on('connect_error', (error) => {
+      console.error('Socket connection error:', error);
+    });
+
     setSocket(socketInstance);
 
-    // Clean up function
     return () => {
       socketInstance.disconnect();
     };
-  }, [serverUrl]);
+  }, [serverUrl]); // Keep the dependency for react-hooks/exhaustive-deps rule
 
   return socket;
 };
