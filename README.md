@@ -1,6 +1,23 @@
-# Cards Against Humanity Online
+# Cards Against Humanity Web Game
 
-A modern, real-time multiplayer implementation of Cards Against Humanity using React, Node.js, Socket.IO, and PostgreSQL.
+A web-based implementation of the popular card game "Cards Against Humanity," featuring real-time multiplayer gameplay, custom card decks, and an admin dashboard.
+
+## Features
+
+- Real-time multiplayer gameplay using Socket.IO
+- Customizable card decks and game settings
+- In-game chat functionality
+- Admin dashboard for game management
+- Responsive design for desktop and mobile play
+
+## Technologies Used
+
+- **Frontend**: React, React Router, Socket.IO Client
+- **Backend**: Node.js, Express, Socket.IO
+- **Database**: PostgreSQL
+- **Deployment**: Render.com
+
+## Project Structure
 
 ## 🎮 Features
 
@@ -42,82 +59,116 @@ A modern, real-time multiplayer implementation of Cards Against Humanity using R
 
 ### Prerequisites
 
-- Node.js 16+
-- PostgreSQL 13+
-- Redis 6+ (optional, for scaling)
-- Docker and Docker Compose (for local development)
+- Node.js (v14 or later)
+- PostgreSQL (v12 or later)
+- Git
 
-### Local Development Setup
+### Installation
 
-1. **Clone the repository**
-```bash
-git clone https://github.com/yourusername/cards-against-humanity.git
-cd cards-against-humanity
-```
+1. Clone the repository:
+   ```
+   git clone https://github.com/yourusername/cards-humanity-web.git
+   cd cards-humanity-web
+   ```
 
-2. **Set up environment variables**
+2. Set up environment variables:
+   - Copy `.env.example` to `.env` in the project root
+   - Update the variables with your configuration
 
-Create `.env` files in both client and server directories:
+3. Install server dependencies:
+   ```
+   cd server
+   npm install
+   ```
 
-```env
-# server/.env
-NODE_ENV=development
-DATABASE_URL=postgresql://username:password@localhost:5432/cards_against_humanity
-FRONTEND_URL=http://localhost:3000
-ADMIN_USERNAME=admin
-ADMIN_PASSWORD=admin
-JWT_SECRET=your_jwt_secret
+4. Set up the database:
+   ```
+   npm run db:migrate
+   ```
 
-# client/.env
-REACT_APP_API_URL=http://localhost:3001
-REACT_APP_WS_URL=ws://localhost:3001
-```
+5. Start the server:
+   ```
+   npm start
+   ```
 
-3. **Install dependencies**
-```bash
-# Install server dependencies
-cd server
-npm install
+6. Install client dependencies:
+   ```
+   cd ../client
+   npm install
+   ```
 
-# Install client dependencies
-cd ../client
-npm install
-```
+7. Start the client:
+   ```
+   npm start
+   ```
 
-4. **Start development servers**
-```bash
-# Start all services using Docker Compose
-docker-compose up
+The application should now be running at http://localhost:3000 with the server on http://localhost:3001.
 
-# Or start services individually:
-# Terminal 1 - Start server
-cd server
-npm run dev
+## Deploying to Render.com
 
-# Terminal 2 - Start client
-cd client
-npm start
-```
+### Setup
 
-5. **Initialize database**
-```bash
-cd server
-npm run db:migrate
-npm run db:seed
-```
+1. Create a PostgreSQL database on Render.com:
+   - Go to Dashboard → New → PostgreSQL
+   - Name: `cah-db`
+   - Database: `cards_against_humanity`
+   - User: `cah_admin`
+   - Click "Create Database"
+   - Save the Internal Database URL
 
-## 🏗️ Project Structure
-
-## Deployment to Render
-
-1. Fork this repository to your GitHub account.
-
-2. Create a new Web Service on Render:
+2. Deploy the backend:
+   - Go to Dashboard → New → Web Service
    - Connect your GitHub repository
-   - Select the "render.yaml" configuration
-   - Add your environment variables
+   - Name: `cah-server`
+   - Root Directory: `server`
+   - Environment: `Node`
+   - Build Command: `npm install`
+   - Start Command: `npm start`
+   - Add Environment Variables:
+     - `NODE_ENV`: `production`
+     - `DATABASE_URL`: (paste the Internal Database URL from step 1)
+     - `CLIENT_URL`: `https://cah-client.onrender.com`
+   - Click "Create Web Service"
 
-3. Render will automatically deploy your application.
+3. Deploy the frontend:
+   - Go to Dashboard → New → Web Service
+   - Connect your GitHub repository
+   - Name: `cah-client`
+   - Root Directory: `client`
+   - Environment: `Node`
+   - Build Command: `npm install && npm run build`
+   - Start Command: `npx serve -s build`
+   - Add Environment Variable:
+     - `REACT_APP_API_URL`: `https://cah-server.onrender.com`
+   - Click "Create Web Service"
+
+### Important Notes for Deployment
+
+- Make sure the client's package.json has all required dependencies:
+  - react-router-dom
+  - socket.io-client
+  - axios
+  - react-icons
+
+- The server's package.json should have:
+  - express
+  - socket.io
+  - pg (PostgreSQL client)
+  - cors
+  - helmet
+  - winston (for logging)
+  - express-rate-limit
+
+- Database migrations will run automatically during server deployment
+- The client will be built during deployment and served as a static site
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+[MIT License](LICENSE)
 
 ## Admin Access
 
