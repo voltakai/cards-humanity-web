@@ -67,8 +67,8 @@ A web-based implementation of the popular card game "Cards Against Humanity," fe
 
 1. Clone the repository:
    ```
-   git clone https://github.com/voltakai/cards-humanity-web.git
-   cd cards-humanity-web
+   git clone https://github.com/voltakai/cards-humanity.git
+   cd cards-humanity
    ```
 
 2. Set up environment variables:
